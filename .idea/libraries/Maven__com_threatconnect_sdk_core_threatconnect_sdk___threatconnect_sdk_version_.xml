@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: com.threatconnect.sdk.core:threatconnect-sdk:${threatconnect-sdk.version}">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/com/threatconnect/sdk/core/threatconnect-sdk/${threatconnect-sdk.version}/threatconnect-sdk-${threatconnect-sdk.version}.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/com/threatconnect/sdk/core/threatconnect-sdk/${threatconnect-sdk.version}/threatconnect-sdk-${threatconnect-sdk.version}-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/com/threatconnect/sdk/core/threatconnect-sdk/${threatconnect-sdk.version}/threatconnect-sdk-${threatconnect-sdk.version}-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
