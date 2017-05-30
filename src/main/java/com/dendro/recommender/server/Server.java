@@ -1,8 +1,14 @@
 package com.dendro.recommender.server;
+import Exceptions.UriNotFoundException;
+
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import java.util.ArrayList;
+import java.util.Map;
+import ContentManagment.*;
 
 // Plain old Java Object it does not extend as class or implements
 // an interface
@@ -16,6 +22,7 @@ import javax.ws.rs.core.MediaType;
 //Sets the path to base URL + /hello
 @Path("/hello")
 public class Server {
+    /*
 
     // This method is called if TEXT_PLAIN is request
     @GET
@@ -23,14 +30,19 @@ public class Server {
     public String sayPlainTextHello() {
         return "Hello Jersey";
     }
+    */
 
     // This method is called if XML is request
     @GET
-    @Produces(MediaType.TEXT_XML)
-    public String sayXMLHello() {
-        return "<?xml version=\"1.0\"?>" + "<hello> Hello Jersey" + "</hello>";
+    @Produces(MediaType.TEXT_PLAIN)
+    public Response sayXMLHello()
+    {
+        String output = RomeLibraryExample.getCont();
+        return Response.status(200).entity(output).build();
+
     }
 
+    /*
     // This method is called if HTML is request
     @GET
     @Produces(MediaType.TEXT_HTML)
@@ -38,5 +50,6 @@ public class Server {
         return "<html> " + "<title>" + "Hello Jersey" + "</title>"
                 + "<body><h1>" + "Hello Jersey" + "</body></h1>" + "</html> ";
     }
+    */
 
 }

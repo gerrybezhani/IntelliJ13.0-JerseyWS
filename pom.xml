@@ -15,9 +15,9 @@
             <version>2.10.1</version>
         </dependency>
         <dependency>
-            <groupId>rome</groupId>
+            <groupId>com.rometools</groupId>
             <artifactId>rome</artifactId>
-            <version>1.0</version>
+            <version>1.7.3</version>
         </dependency>
         <dependency>
             <groupId>org.jsoup</groupId>
@@ -44,11 +44,7 @@
             <artifactId>httpcore</artifactId>
             <version>4.4.6</version>
         </dependency>
-        <dependency>
-            <groupId>com.sun.jersey</groupId>
-            <artifactId>jersey-server</artifactId>
-            <version>1.8</version>
-        </dependency>
+
     </dependencies>
 
 </project>

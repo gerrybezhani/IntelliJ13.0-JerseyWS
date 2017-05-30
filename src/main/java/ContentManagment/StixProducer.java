@@ -1,3 +1,5 @@
+package ContentManagment;
+
 import org.apache.commons.lang.StringUtils;
 import org.mitre.cybox.common_2.*;
 import org.mitre.cybox.common_2.ObjectFactory;
@@ -267,7 +269,7 @@ public class StixProducer {
     //Method for producing stix from malware domain list
 
     //method that produces stix contnet for threats
-    public static void produceForThreat(String threat)
+    public static String produceForThreat(String threat)
     {
         XMLGregorianCalendar now = HelperMethods.getTime();
 
@@ -295,11 +297,12 @@ public class StixProducer {
                 .withTTPs(new TTPsType().withTTPS(ttp));
 
 
-        System.out.println(stixPackage.toXMLString(true));
+       // System.out.println(stixPackage.toXMLString(true));
+        return stixPackage.toXMLString(true);
 
-        System.out.println(StringUtils.repeat("-", 120));
+        //System.out.println(StringUtils.repeat("-", 120));
 
-        System.out.println("Validates: " + stixPackage.validate());
+       // System.out.println("Validates: " + stixPackage.validate());
 
     }
 
@@ -382,7 +385,8 @@ public class StixProducer {
 
     }
 
-    public static void produce(String IP,String type) {
+    public static String produce(String IP, String type) {
+
 
         XMLGregorianCalendar now = HelperMethods.getTime();
 
@@ -426,14 +430,13 @@ public class StixProducer {
                 .withId(new QName("gerry.ptyxiaki.it.teithe", "package-"
                         + UUID.randomUUID().toString(), "gerry"));
 
-        System.out.println(stixPackage.toXMLString(true));
+        //System.out.println(stixPackage.toXMLString(true));
+        return stixPackage.toXMLString(true);
 
-        System.out.println(StringUtils.repeat("-", 120));
 
-        System.out.println("Validates: " + stixPackage.validate());
     }
 
-    public static void cveGen(Map<String,String> content)
+    public static String cveGen(Map<String,String> content)
     {
         //cleaning up the other info to het cve id and dates
         String otherInfoStr = content.get("Other Information");
@@ -516,12 +519,14 @@ public class StixProducer {
                 .withId(new QName("gerry.ptyxiaki.it.teithe", "package-"
                         + UUID.randomUUID().toString(), "gerry"));
 
-        System.out.println(stixPackage.toXMLString(true));
+       //System.out.println(stixPackage.toXMLString(true));
+        return stixPackage.toXMLString(true);
 
-        System.out.println(StringUtils.repeat("-", 120));
+
+        //System.out.println(StringUtils.repeat("-", 120));
 
 
-        System.out.println("Validates: " + stixPackage.validate());
+        //System.out.println("Validates: " + stixPackage.validate());
     }
 
 }
