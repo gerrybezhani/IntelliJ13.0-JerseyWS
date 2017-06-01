@@ -16,7 +16,7 @@ public class AdressesClass {
 
 
 
-    static ArrayList<String> getUrls()
+    public static ArrayList<String> getUrls()
     {
         ArrayList<String>  uriArList = new ArrayList<String>();
         uriArList.add(uri1);
@@ -28,6 +28,8 @@ public class AdressesClass {
 
         return uriArList;
     }
+
+
 
 
 }
