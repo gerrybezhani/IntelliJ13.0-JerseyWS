@@ -7,9 +7,16 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import ContentManagment.*;
+import Exceptions.UriNotFoundException;
 
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
+import java.util.Map;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 import static ContentManagment.AdressesClass.getUrls;
 
@@ -50,18 +57,53 @@ public class Server {
     @Produces(MediaType.TEXT_PLAIN)
     public Response sayXMLHello()
     {
-
-        String output = RomeLibraryExample.getCont();
-        File file = null;
+        ArrayList<Map<String,String>> parsedCont = ParsersFromRssClass.parseRssFeeds("http://www.kb.cert.org/vulfeed");
+        ArrayList<Map<String,String>> cleanedCont = null;
         try {
-            file = new File("stix.xml");
-            FileWriter fileWriter = new FileWriter(file);
-            fileWriter.write(output);
-            fileWriter.flush();
-            fileWriter.close();
-        } catch (IOException e) {
+            cleanedCont = CleanUpClass.cleanUp(parsedCont);
+
+        } catch (UriNotFoundException e) {
             e.printStackTrace();
+            Response.ResponseBuilder rs = Response.ok("uri not found");
+            return rs.build();
         }
+
+        String output;
+        File file = null;
+        for (int i = 1; i < cleanedCont.size(); i++) {
+            output=StixProducer.cveGen(cleanedCont.get(i));
+
+            file = null;
+            try {
+                file = new File("tmp/stix.xml");
+                FileWriter fileWriter = new FileWriter(file);
+                fileWriter.write(output);
+                fileWriter.flush();
+                fileWriter.close();
+
+                String newName = HelperMethods.getStixName(file.getPath());
+                File file2 = new File("tmp/"+newName+".xml");
+
+                java.nio.file.Path f = Paths.get(file.getAbsolutePath());
+
+                java.nio.file.Path fs = Paths.get(file2.getAbsolutePath());
+
+                try {
+                    Files.move(f, fs, StandardCopyOption.REPLACE_EXISTING);
+                    System.out.println("File was successfully renamed");
+                } catch (IOException e)
+                {
+                    e.printStackTrace();
+                    System.out.println("Error: unable to rename file");
+                }
+
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+
 
         Response.ResponseBuilder response = Response.ok((Object) file);
         response.header("Content-Disposition",
