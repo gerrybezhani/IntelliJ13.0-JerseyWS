@@ -2,6 +2,7 @@ package com.dendro.recommender.server;
 
 
 import javax.ws.rs.GET;
+import javax.ws.rs.MatrixParam;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
@@ -10,6 +11,8 @@ import ContentManagment.*;
 import Exceptions.UriNotFoundException;
 
 import java.io.*;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
@@ -55,9 +58,14 @@ public class Server {
     // This method is called if XML is request
     @GET
     @Produces(MediaType.TEXT_PLAIN)
-    public Response sayXMLHello()
+    public Response sayXMLHello(@MatrixParam("source") String source)
     {
-        ArrayList<Map<String,String>> parsedCont = ParsersFromRssClass.parseRssFeeds("http://www.kb.cert.org/vulfeed");
+        String url = HelperMethods.getSourceFromName(source);
+
+        if(url==null)
+            return Response.status(200).entity("Source not found").build();
+
+        ArrayList<Map<String,String>> parsedCont = ParsersFromRssClass.parseRssFeeds(url);
         ArrayList<Map<String,String>> cleanedCont = null;
         try {
             cleanedCont = CleanUpClass.cleanUp(parsedCont);
@@ -68,10 +76,55 @@ public class Server {
             return rs.build();
         }
 
-        String output;
+        String output = null;
         File file = null;
+        Method method = null;
+        ArrayList<String> fileNames;
+
+        try {
+            if(source.contains("cert"))
+            {
+                 method = StixProducer.class.getDeclaredMethod("cveGen", Map.class);
+            }
+            else if(source.contains("projecthoneypot"))
+            {
+                 method = StixProducer.class.getDeclaredMethod("produceForIp", String.class, String.class);
+            }
+            else if(source.contains("malc0de"))
+            {
+                 method = StixProducer.class.getDeclaredMethod("produceForBadHost", Map.class);
+
+            }
+            else if(source.contains("malwaredomainlist"))
+            {
+                 method = StixProducer.class.getDeclaredMethod("produceForMalwareDomain", Map.class);
+            }
+            else if(source.contains("malekal"))
+            {
+                 method = StixProducer.class.getDeclaredMethod("produceForFileHash", Map.class);
+            }
+            else if(source.contains("threatexpert"))
+            {
+                 method = StixProducer.class.getDeclaredMethod("produceForThreat", String.class);
+            }
+
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+        }
+
+
+        fileNames = new ArrayList<String>();
         for (int i = 1; i < cleanedCont.size(); i++) {
-            output=StixProducer.cveGen(cleanedCont.get(i));
+
+
+            try {
+                output = (String)method.invoke(null,cleanedCont.get(i));
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            } catch (InvocationTargetException e) {
+                e.printStackTrace();
+            }
+
 
             file = null;
             try {
@@ -84,6 +137,8 @@ public class Server {
                 String newName = HelperMethods.getStixName(file.getPath());
                 File file2 = new File("tmp/"+newName+".xml");
 
+
+
                 java.nio.file.Path f = Paths.get(file.getAbsolutePath());
 
                 java.nio.file.Path fs = Paths.get(file2.getAbsolutePath());
@@ -91,6 +146,8 @@ public class Server {
                 try {
                     Files.move(f, fs, StandardCopyOption.REPLACE_EXISTING);
                     System.out.println("File was successfully renamed");
+                    fileNames.add(file2.getAbsolutePath());
+                    file.delete();
                 } catch (IOException e)
                 {
                     e.printStackTrace();
@@ -103,11 +160,13 @@ public class Server {
             }
         }
 
+        File zipFile = HelperMethods.FilesToZip(fileNames,source+".zip");
 
 
-        Response.ResponseBuilder response = Response.ok((Object) file);
+
+        Response.ResponseBuilder response = Response.ok((Object) zipFile);
         response.header("Content-Disposition",
-                "attachment; filename=\"stix.xml\"");
+                "attachment; filename=\"stix.zip\"");
         return response.build();
 
     }

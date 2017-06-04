@@ -1,10 +1,5 @@
 package ContentManagment;
 
-import Exceptions.UriNotFoundException;
-
-import java.util.ArrayList;
-import java.util.Map;
-
 
 public class RomeLibraryExample {
 
@@ -14,7 +9,7 @@ public class RomeLibraryExample {
     public static void main(String[] args){
 
         //test call to test C2 IP stix producer
-      // ContentManagment.StixProducer.produce("192.168.1.1","Harvester");
+      // ContentManagment.StixProducer.produceForIp("192.168.1.1","Harvester");
 
         System.out.println(getCont());
         /*
@@ -37,7 +32,7 @@ public class RomeLibraryExample {
 
     public static String getCont()
     {
-           return StixProducer.produce("192.182.1.256","ABCC");
+           return StixProducer.produceForIp("192.182.1.256","ABCC");
 
     }
 

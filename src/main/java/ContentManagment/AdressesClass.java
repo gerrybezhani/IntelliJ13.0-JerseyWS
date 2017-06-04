@@ -13,6 +13,7 @@ public class AdressesClass {
      private static String uri4 = "http://www.kb.cert.org/vulfeed";
      private static String uri5 = "http://www.malshare.com";
      private static String uri6 = "http://www.threatexpert.com/latest_threat_reports.aspx";
+     private static String uri7 = "http://malwaredb.malekal.com/rss.php";
 
 
 

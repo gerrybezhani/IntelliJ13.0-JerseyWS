@@ -40,7 +40,7 @@ import java.util.UUID;
 public class StixProducer {
 
     //method for produces stix content for malware infected hosts
-    public static void produceForBadHost(final Map<String,String> contents)
+    public static String produceForBadHost(final Map<String,String> contents)
     {
         XMLGregorianCalendar now = HelperMethods.getTime();
 
@@ -151,11 +151,12 @@ public class StixProducer {
                 .withIndicators(indicators);
 
 
-        System.out.println(stixPackage.toXMLString(true));
+       // System.out.println(stixPackage.toXMLString(true));
 
-        System.out.println(StringUtils.repeat("-", 120));
+        //System.out.println(StringUtils.repeat("-", 120));
 
         System.out.println("Validates: " + stixPackage.validate());
+        return stixPackage.toXMLString(true);
 
     }
 
@@ -309,7 +310,7 @@ public class StixProducer {
 
     //method that produces stix content for hashes of files
 
-    public static void produceForFileHash(final Map<String,String> content)
+    public static String produceForFileHash(final Map<String,String> content)
     {
         XMLGregorianCalendar now = HelperMethods.getTime();
         FileObjectType fileObject = new FileObjectType()
@@ -376,16 +377,18 @@ public class StixProducer {
                 .withId(new QName("gerry.ptyxiaki.it.teithe", "package-"
                         + UUID.randomUUID().toString(), "gerry"));
 
-        System.out.println(stixPackage.toXMLString(true));
+        //System.out.println(stixPackage.toXMLString(true));
 
-        System.out.println(StringUtils.repeat("-", 120));
+        //System.out.println(StringUtils.repeat("-", 120));
 
         System.out.println("Validates: " + stixPackage.validate());
+
+        return stixPackage.toXMLString(true);
 
 
     }
 
-    public static String produce(String IP, String type) {
+    public static String produceForIp(String IP, String type) {
 
 
         XMLGregorianCalendar now = HelperMethods.getTime();

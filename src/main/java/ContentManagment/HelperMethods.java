@@ -92,33 +92,50 @@ public class HelperMethods {
         return now;
     }
 
-    public static void FilesToZip(ArrayList<String> ftp, String outName) {
-        ZipOutputStream out = null;
-        // input file
-        FileInputStream in = null;
-        try {
-            in = new FileInputStream("F:/sometxt.txt");
-            // out put file
-            out = new ZipOutputStream(new FileOutputStream("F:/tmp.zip"));
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
+    public static File FilesToZip(ArrayList<String> ftp, String outName) {
 
-        // name the file inside the zip  file
-        try {
-            out.putNextEntry(new ZipEntry("zippedjava.txt"));
-            // buffer size
-            byte[] b = new byte[1024];
-            int count;
+        String zipFile = "tmp/"+outName;
+        File file = new File(zipFile);
 
-            while ((count = in.read(b)) > 0) {
-                out.write(b, 0, count);
+        try {
+
+            // create byte buffer
+            byte[] buffer = new byte[1024];
+
+            FileOutputStream fos = new FileOutputStream(file);
+
+            ZipOutputStream zos = new ZipOutputStream(fos);
+
+            for (int i=0; i < ftp.size(); i++) {
+
+                File srcFile = new File(ftp.get(i));
+
+                FileInputStream fis = new FileInputStream(srcFile);
+
+                // begin writing a new ZIP entry, positions the stream to the start of the entry data
+                zos.putNextEntry(new ZipEntry(srcFile.getName()));
+
+                int length;
+
+                while ((length = fis.read(buffer)) > 0) {
+                    zos.write(buffer, 0, length);
+                }
+
+                zos.closeEntry();
+
+                // close the InputStream
+                fis.close();
+
             }
-            out.close();
-            in.close();
-        } catch (IOException e) {
-            e.printStackTrace();
+
+            // close the ZipOutputStream
+            zos.close();
+
         }
+        catch (IOException ioe) {
+            System.out.println("Error creating zip file: " + ioe);
+        }
+        return file;
 
 
     }
@@ -149,5 +166,19 @@ public class HelperMethods {
 
         }
         return id2;
+    }
+
+
+    //this method will help conver a short name ie: "cert" to the actual source url
+    public static String getSourceFromName(String name)
+    {
+        ArrayList<String> sources = AdressesClass.getUrls();
+
+        for (int i = 0; i < sources.size() ; i++) {
+            if(sources.get(i).contains(name))
+                return sources.get(i);
+        }
+
+        return null;
     }
 }

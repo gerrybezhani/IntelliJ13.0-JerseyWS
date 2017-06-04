@@ -7,6 +7,7 @@ import com.rometools.rome.feed.synd.SyndFeed;
 import com.rometools.rome.io.FeedException;
 import com.rometools.rome.io.SyndFeedInput;
 import com.rometools.rome.io.XmlReader;
+import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -111,7 +112,7 @@ public class ParsersFromRssClass {
                 Element row = table.select("tr").first();
                 Element td = row.select("td").first();
 
-                mapCont.put("Description",td.text());
+                mapCont.put("Description", StringEscapeUtils.escapeHtml(td.text()));
 
             }
             else if(h3El.get(i).text().equals("Impact"))
@@ -120,7 +121,7 @@ public class ParsersFromRssClass {
                 Element row = table.select("tr").first();
                 Element td = row.select("td").first();
 
-                mapCont.put("Impact",td.text());
+                mapCont.put("Impact", StringEscapeUtils.escapeHtml(td.text()));
             }
             else if(h3El.get(i).text().equals("Solution"))
             {
@@ -128,7 +129,7 @@ public class ParsersFromRssClass {
                 Element row = table.select("tr").first();
                 Element td = row.select("td").first();
 
-                mapCont.put("Solution",td.text());
+                mapCont.put("Solution", StringEscapeUtils.escapeHtml(td.text()));
 
             }
             else if(h3El.get(i).text().contains("Vendor Information "))
@@ -252,9 +253,9 @@ public class ParsersFromRssClass {
 
 
         while (itEntries.hasNext()) {
-            contMap = new HashMap<String, String>();
+           // contMap = new HashMap<String, String>();
             SyndEntry entry = (SyndEntry) itEntries.next();
-            System.out.println(entry.getUri());
+            //System.out.println(entry.getUri());
             contMap.put("Title",entry.getTitle());
             contMap.put("Link",entry.getLink());
             contMap.put("Description",entry.getDescription().getValue());
