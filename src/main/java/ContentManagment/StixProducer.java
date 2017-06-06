@@ -160,7 +160,7 @@ public class StixProducer {
 
     }
 
-    public static void produceForMalwareDomain(final Map<String,String> contents) {
+    public static String produceForMalwareDomain(final Map<String,String> contents) {
         XMLGregorianCalendar now = HelperMethods.getTime();
 
         StringObjectPropertyType stringObjectPropertyType = (new ObjectFactory()).createStringObjectPropertyType().withValue(contents.get("IP"));
@@ -259,19 +259,21 @@ public class StixProducer {
                 .withTTPs(new TTPsType().withTTPS(ttp));
 
 
-
-        System.out.println(stixPackage.toXMLString(true));
-
-        System.out.println(StringUtils.repeat("-", 120));
-
         System.out.println("Validates: " + stixPackage.validate());
+
+        return stixPackage.toXMLString(true);
+
+        //System.out.println(StringUtils.repeat("-", 120));
+
+
     }
 
     //Method for producing stix from malware domain list
 
     //method that produces stix contnet for threats
-    public static String produceForThreat(String threat)
+    public static String produceForThreat(Map<String,String> content)
     {
+        String threat = content.get("Title");
         XMLGregorianCalendar now = HelperMethods.getTime();
 
         MalwareInstanceType malwareInstanceType = new MalwareInstanceType().withId(new QName("gerry.ptyxiaki.it.teithe", "observable-"
@@ -388,8 +390,10 @@ public class StixProducer {
 
     }
 
-    public static String produceForIp(String IP, String type) {
+    public static String produceForIp(Map<String,String> content) {
 
+        String IP = content.get("IP");
+        String type = content.get("Cat");
 
         XMLGregorianCalendar now = HelperMethods.getTime();
 

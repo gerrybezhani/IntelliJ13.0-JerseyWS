@@ -33,6 +33,8 @@ public class CleanUpClass {
                 cleanedMap.put("Country",tmpAr[2]);
                 cleanedMap.put("ASN",tmpAr[3]);
                 cleanedMap.put("MD5",tmpAr[4]);
+                cleanedMap.put("HASHTYPE","MD5");
+
             }
             else if (MapUri.contains("malwaredomainlist.com"))
             {
@@ -54,6 +56,7 @@ public class CleanUpClass {
                 String[] tmpTable =(tempMap.get("Description")).split(":");
                 String reference = tmpTable[1];
                 cleanedMap.put("HASHVALUE",tempMap.get("Title"));
+                cleanedMap.put("HASHTYPE","MD5");
                 cleanedMap.put("reference",reference);
 
             }
@@ -69,6 +72,7 @@ public class CleanUpClass {
             else if(MapUri.contains("malwared.malwaremustdie.org/rss_ssh.php"))
             {
                 cleanedMap.put("IP",tempMap.get("Description"));
+                cleanedMap.put("Cat","sshd");
             }
             else
             {
@@ -98,3 +102,4 @@ public class CleanUpClass {
         return strTbl;
     }
 }
+

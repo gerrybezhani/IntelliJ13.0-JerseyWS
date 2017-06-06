@@ -18,10 +18,7 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.Map;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipOutputStream;
 
-import static ContentManagment.AdressesClass.getUrls;
 
 // Plain old Java Object it does not extend as class or implements
 // an interface
@@ -58,7 +55,7 @@ public class Server {
     // This method is called if XML is request
     @GET
     @Produces(MediaType.TEXT_PLAIN)
-    public Response sayXMLHello(@MatrixParam("source") String source)
+    public Response sayXMLHello(@MatrixParam("source") String source,@MatrixParam("limit") int limit)
     {
         String url = HelperMethods.getSourceFromName(source);
 
@@ -88,7 +85,7 @@ public class Server {
             }
             else if(source.contains("projecthoneypot"))
             {
-                 method = StixProducer.class.getDeclaredMethod("produceForIp", String.class, String.class);
+                 method = StixProducer.class.getDeclaredMethod("produceForIp", Map.class);
             }
             else if(source.contains("malc0de"))
             {
@@ -105,7 +102,11 @@ public class Server {
             }
             else if(source.contains("threatexpert"))
             {
-                 method = StixProducer.class.getDeclaredMethod("produceForThreat", String.class);
+                 method = StixProducer.class.getDeclaredMethod("produceForThreat", Map.class);
+            }
+            else if(source.contains("malwaremustdie"))
+            {
+                method = StixProducer.class.getDeclaredMethod("produceForIp", Map.class);
             }
 
         } catch (NoSuchMethodException e) {
@@ -114,7 +115,13 @@ public class Server {
 
 
         fileNames = new ArrayList<String>();
-        for (int i = 1; i < cleanedCont.size(); i++) {
+
+        if(limit == 0 || limit >= cleanedCont.size())
+            limit = cleanedCont.size();
+        else
+            limit++;
+
+        for (int i = 1; i <limit; i++) {
 
 
             try {
@@ -126,7 +133,6 @@ public class Server {
             }
 
 
-            file = null;
             try {
                 file = new File("tmp/stix.xml");
                 FileWriter fileWriter = new FileWriter(file);
@@ -162,11 +168,20 @@ public class Server {
 
         File zipFile = HelperMethods.FilesToZip(fileNames,source+".zip");
 
+        for (int i = 0; i < fileNames.size(); i++) {
+            try {
+                Files.deleteIfExists(Paths.get(fileNames.get(i)));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+
 
 
         Response.ResponseBuilder response = Response.ok((Object) zipFile);
         response.header("Content-Disposition",
-                "attachment; filename=\"stix.zip\"");
+                "attachment; filename=\" " +zipFile.getName() +"\"");
         return response.build();
 
     }

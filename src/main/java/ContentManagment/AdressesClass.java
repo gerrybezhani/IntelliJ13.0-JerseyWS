@@ -14,6 +14,7 @@ public class AdressesClass {
      private static String uri5 = "http://www.malshare.com";
      private static String uri6 = "http://www.threatexpert.com/latest_threat_reports.aspx";
      private static String uri7 = "http://malwaredb.malekal.com/rss.php";
+     private static String uri8 = "https://malwared.malwaremustdie.org/rss_ssh.php";
 
 
 
@@ -26,6 +27,8 @@ public class AdressesClass {
         uriArList.add(uri4);
         uriArList.add(uri5);
         uriArList.add(uri6);
+        uriArList.add(uri7);
+        uriArList.add(uri8);
 
         return uriArList;
     }
