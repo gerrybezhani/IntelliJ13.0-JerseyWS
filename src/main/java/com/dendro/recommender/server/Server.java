@@ -134,14 +134,15 @@ public class Server {
 
 
             try {
-                file = new File("tmp/stix.xml");
+                String userHome = System.getProperty("java.io.tmpdir");
+                file = new File(userHome,"tmp.xml");
                 FileWriter fileWriter = new FileWriter(file);
                 fileWriter.write(output);
                 fileWriter.flush();
                 fileWriter.close();
 
                 String newName = HelperMethods.getStixName(file.getPath());
-                File file2 = new File("tmp/"+newName+".xml");
+                File file2 = new File(userHome,newName+".xml");
 
 
 
@@ -185,6 +186,8 @@ public class Server {
         return response.build();
 
     }
+
+
 
 
 

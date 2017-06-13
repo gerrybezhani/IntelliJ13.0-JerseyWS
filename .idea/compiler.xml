@@ -19,8 +19,8 @@
         <module name="Recommender" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="Recommender" target="1.5" />
+    <bytecodeTargetLevel target="1.8">
+      <module name="Recommender" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>

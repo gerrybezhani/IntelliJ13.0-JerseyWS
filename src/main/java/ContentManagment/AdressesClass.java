@@ -14,7 +14,7 @@ public class AdressesClass {
      private static String uri5 = "http://www.malshare.com";
      private static String uri6 = "http://www.threatexpert.com/latest_threat_reports.aspx";
      private static String uri7 = "http://malwaredb.malekal.com/rss.php";
-     private static String uri8 = "https://malwared.malwaremustdie.org/rss_ssh.php";
+     private static String uri8 = "http://malwared.malwaremustdie.org/rss_ssh.php";
 
 
 

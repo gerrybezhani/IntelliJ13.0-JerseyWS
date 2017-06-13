@@ -94,8 +94,8 @@ public class HelperMethods {
 
     public static File FilesToZip(ArrayList<String> ftp, String outName) {
 
-        String zipFile = "tmp/"+outName;
-        File file = new File(zipFile);
+        String homeDir = System.getProperty("java.io.tmpdir");
+        File file = new File(homeDir,outName);
 
         try {
 

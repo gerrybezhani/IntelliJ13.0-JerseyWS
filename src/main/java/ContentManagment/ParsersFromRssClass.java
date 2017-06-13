@@ -18,6 +18,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.xml.sax.XMLReader;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
@@ -234,6 +235,7 @@ public class ParsersFromRssClass {
             // Reading the feed
             SyndFeedInput input = new SyndFeedInput();
             SyndFeed feed = input.build(new XmlReader(httpcon));
+
             List entries = feed.getEntries();
             itEntries = entries.iterator();
         } catch (MalformedURLException e) {
