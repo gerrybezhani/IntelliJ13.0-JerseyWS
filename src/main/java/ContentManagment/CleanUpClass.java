@@ -46,7 +46,7 @@ public class CleanUpClass {
                 cleanedMap.put("Description",tmpAr[4]);
             }
             else if (MapUri.contains("projecthoneypot.org")) {
-                    System.out.println(tempMap.get("Title"));
+                    //System.out.println(tempMap.get("Title"));
                     String[] table = tempMap.get("Title").split("\\|");
                     cleanedMap.put("IP",table[0]);
                     cleanedMap.put("Cat",new HelperMethods().getIpCategory(table[1]));
@@ -73,6 +73,12 @@ public class CleanUpClass {
             {
                 cleanedMap.put("IP",tempMap.get("Description"));
                 cleanedMap.put("Cat","sshd");
+            }
+            else if(MapUri.contains("malshare.com"))
+            {
+                cleanedMap.put("HASHVALUE",tempMap.get("MD5HASH"));
+                cleanedMap.put("HASHTYPE","MD5");
+                cleanedMap.put("reference","malshare.com/sample.php?action=detail&hash="+tempMap.get("MD5HASH"));
             }
             else
             {

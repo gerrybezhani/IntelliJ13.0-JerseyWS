@@ -108,6 +108,10 @@ public class Server {
             {
                 method = StixProducer.class.getDeclaredMethod("produceForIp", Map.class);
             }
+            else if(source.contains("malshare"))
+            {
+                method = StixProducer.class.getDeclaredMethod("produceForFileHash", Map.class);
+            }
 
         } catch (NoSuchMethodException e) {
             e.printStackTrace();

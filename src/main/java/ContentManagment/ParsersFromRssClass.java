@@ -41,7 +41,21 @@ public class ParsersFromRssClass {
             return test;
 
         }
+        else if(url.contains("malshare"))
+        {
+            ArrayList<Map<String,String>> tmpArList = null;
+            Map<String,String> tmpMap = new HashMap<String, String>();
+            String[] cont = getFromMalshare();
 
+            tmpMap.put("URI",url);
+            tmpArList.add(tmpMap);
+            for (int i = 0; i < cont.length; i++) {
+                tmpMap = new HashMap<String, String>();
+                tmpMap.put("MD5HASH",cont[i]);
+                tmpArList.add(tmpMap);
+            }
+            return tmpArList;
+        }
         else
             return getContFromRssNoHtml(url);
 
