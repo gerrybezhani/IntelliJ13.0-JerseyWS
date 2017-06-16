@@ -43,7 +43,7 @@ public class ParsersFromRssClass {
         }
         else if(url.contains("malshare"))
         {
-            ArrayList<Map<String,String>> tmpArList = null;
+            ArrayList<Map<String,String>> tmpArList = new ArrayList<Map<String, String>>();
             Map<String,String> tmpMap = new HashMap<String, String>();
             String[] cont = getFromMalshare();
 
