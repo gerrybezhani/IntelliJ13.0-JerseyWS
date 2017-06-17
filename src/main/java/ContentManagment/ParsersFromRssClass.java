@@ -266,10 +266,10 @@ public class ParsersFromRssClass {
         //contMap has all the entries contents
         Map<String,String> contMap = new HashMap<String, String>();
         contMap.put("URI",urlAdress);
-
+        contAr.add(contMap);
 
         while (itEntries.hasNext()) {
-           // contMap = new HashMap<String, String>();
+            contMap = new HashMap<String, String>();
             SyndEntry entry = (SyndEntry) itEntries.next();
             //System.out.println(entry.getUri());
             contMap.put("Title",entry.getTitle());

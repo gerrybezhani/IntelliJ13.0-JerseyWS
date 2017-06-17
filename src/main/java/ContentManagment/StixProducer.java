@@ -273,7 +273,7 @@ public class StixProducer {
     //method that produces stix contnet for threats
     public static String produceForThreat(Map<String,String> content)
     {
-        String threat = content.get("Title");
+        String threat = content.get("virus");
         XMLGregorianCalendar now = HelperMethods.getTime();
 
         MalwareInstanceType malwareInstanceType = new MalwareInstanceType().withId(new QName("gerry.ptyxiaki.it.teithe", "observable-"
