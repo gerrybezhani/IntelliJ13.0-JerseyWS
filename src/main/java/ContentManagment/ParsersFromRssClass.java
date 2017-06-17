@@ -31,13 +31,13 @@ import java.util.*;
  */
 public class ParsersFromRssClass {
 
-    public static ArrayList<Map<String,String>> parseRssFeeds(String url)
+    public static ArrayList<Map<String,String>> parseRssFeeds(String url,int size)
     {
         if(url.contains("cert.org"))
         {
 
             ArrayList<Map<String,String>> test ;
-            test = getContentsFromCert();
+            test = getContentsFromCert(size);
             return test;
 
         }
@@ -57,7 +57,7 @@ public class ParsersFromRssClass {
             return tmpArList;
         }
         else
-            return getContFromRssNoHtml(url);
+            return getContFromRssNoHtml(url,size);
 
     }
 
@@ -86,10 +86,10 @@ public class ParsersFromRssClass {
     }
 
 
-    public static ArrayList<Map<String,String>> getContentsFromCert()
+    public static ArrayList<Map<String,String>> getContentsFromCert(int size)
     {
         //contents arraylist contains the HTML content section of the rss feed from CERT.OR
-        ArrayList<String> contents = getFeedContents(AdressesClass.getUrls().get(3));
+        ArrayList<String> contents = getFeedContents(AdressesClass.getUrls().get(3),size);
         ArrayList<Map<String,String>> allContents = new ArrayList<Map<String, String>>();
         Map<String,String> tempMap = new HashMap<String, String>();
         tempMap.put("URI",AdressesClass.getUrls().get(3));
@@ -230,7 +230,7 @@ public class ParsersFromRssClass {
         return null;
     }
 
-    public static ArrayList<Map<String,String>>  getContFromRssNoHtml(String urlAdress) {
+    public static ArrayList<Map<String,String>>  getContFromRssNoHtml(String urlAdress,int size) {
 
         /*
             this method will take a rss URI as a parameter
@@ -250,7 +250,7 @@ public class ParsersFromRssClass {
             SyndFeedInput input = new SyndFeedInput();
             SyndFeed feed = input.build(new XmlReader(httpcon));
 
-            List entries = feed.getEntries();
+            List entries = feed.getEntries().subList(0,size);
             itEntries = entries.iterator();
         } catch (MalformedURLException e) {
             e.printStackTrace();
@@ -282,7 +282,7 @@ public class ParsersFromRssClass {
         return contAr;
     }
 
-    public static  ArrayList<String> getFeedContents(String urlString)
+    public static  ArrayList<String> getFeedContents(String urlString,int size)
     {
         ArrayList<String> htmlCont = new ArrayList<String>();
         SyndFeed feed = null;
@@ -304,7 +304,9 @@ public class ParsersFromRssClass {
         if(feed == null)
             return null;
         //parse rss feed content
-        for (Iterator<?> entryIter = feed.getEntries().iterator(); entryIter.hasNext();) {
+
+        int toBreak = 0; //so we can stop on the user limit
+        for (Iterator<?> entryIter = feed.getEntries().iterator(); entryIter.hasNext() && toBreak<size ;) {
             SyndEntry syndEntry = (SyndEntry) entryIter.next();
             //System.out.println(syndEntry.getDescription());
             if (syndEntry.getContents() != null) {
@@ -317,6 +319,7 @@ public class ParsersFromRssClass {
                     }
                 }
             }
+            toBreak++;
         }
 
         return htmlCont;

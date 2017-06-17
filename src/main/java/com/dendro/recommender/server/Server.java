@@ -62,7 +62,7 @@ public class Server {
         if(url==null)
             return Response.status(200).entity("Source not found").build();
 
-        ArrayList<Map<String,String>> parsedCont = ParsersFromRssClass.parseRssFeeds(url);
+        ArrayList<Map<String,String>> parsedCont = ParsersFromRssClass.parseRssFeeds(url,limit);
         ArrayList<Map<String,String>> cleanedCont = null;
         try {
             cleanedCont = CleanUpClass.cleanUp(parsedCont);
