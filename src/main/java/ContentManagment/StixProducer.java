@@ -66,7 +66,7 @@ public class StixProducer {
                                                 .withValue(contents.get("HASHTYPE")))
                                 .withSimpleHashValue(
                                         new SimpleHashValueType()
-                                                .withValue(contents.get("HASHVALUE"))));
+                                                .withValue(contents.get("MD5"))));
                     }
                 }));
 
@@ -80,7 +80,7 @@ public class StixProducer {
 
         observable.setObject(obj);
 
-        StringObjectPropertyType stringObjectPropertyTypeHost = (new ObjectFactory()).createStringObjectPropertyType().withValue(contents.get("HOST"));
+        StringObjectPropertyType stringObjectPropertyTypeHost = (new ObjectFactory()).createStringObjectPropertyType().withValue(contents.get("URL"));
 
         ObjectType obj2 = new ObjectType().withProperties(new Hostname().withHostnameValue(stringObjectPropertyTypeHost));
         Observable observable2 = new Observable().withId(new QName(
@@ -98,12 +98,12 @@ public class StixProducer {
                 "gerry.ptyxiaki.it.teithe", "observable-"
                 + UUID.randomUUID().toString(), "gerry"));
 
-        observable2.setObject(objAsn);
+        observableAsn.setObject(objAsn);
 
         //observable for source country
 
 
-        ObjectType objCountry = new ObjectType().withLocation(new LocationType().withName(contents.get("COUNTRY")));
+        ObjectType objCountry = new ObjectType().withLocation(new LocationType().withName(contents.get("Country")));
         Observable observableCountry = new Observable().withId(new QName(
                 "gerry.ptyxiaki.it.teithe", "observable-"
                 + UUID.randomUUID().toString(), "gerry"));
@@ -195,12 +195,12 @@ public class StixProducer {
                 "gerry.ptyxiaki.it.teithe", "observable-"
                 + UUID.randomUUID().toString(), "gerry"));
 
-        observable2.setObject(objAsn);
+        observableAsn.setObject(objAsn);
 
         //observable for source country
 
 
-        ObjectType objCountry = new ObjectType().withLocation(new LocationType().withName(contents.get("Country")));
+        ObjectType objCountry = new ObjectType().withLocation(new LocationType().withName(contents.get("COUNTRY")));
         Observable observableCountry = new Observable().withId(new QName(
                 "gerry.ptyxiaki.it.teithe", "observable-"
                 + UUID.randomUUID().toString(), "gerry"));

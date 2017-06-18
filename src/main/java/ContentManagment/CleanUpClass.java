@@ -1,6 +1,10 @@
 package ContentManagment;
 
 import Exceptions.UriNotFoundException;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -53,11 +57,12 @@ public class CleanUpClass {
                 }
             else if(MapUri.contains("malekal.com"))
             {
-                String[] tmpTable =(tempMap.get("Description")).split(":");
-                String reference = tmpTable[1];
+                Document doc = Jsoup.parse(tempMap.get("Description"));
+                Elements aEl = doc.select("a");
+
                 cleanedMap.put("HASHVALUE",tempMap.get("Title"));
                 cleanedMap.put("HASHTYPE","MD5");
-                cleanedMap.put("reference",reference);
+                cleanedMap.put("reference",aEl.text());
 
             }
             else if (MapUri.contains("threatexpert.com"))
