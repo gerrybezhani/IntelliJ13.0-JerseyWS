@@ -19,20 +19,26 @@ public class CleanUpClass {
 
     public static ArrayList<Map<String, String>> cleanUp(ArrayList<Map<String, String>> list) throws UriNotFoundException {
         ArrayList<Map<String,String>> cleanedArray = new ArrayList<Map<String, String>>();
+        Map<String,String> cleanedMap = new HashMap<String, String>();
 
         String MapUri = list.get(0).get("URI");
+        cleanedMap.put("URI",MapUri);
+        cleanedArray.add(cleanedMap);
+
+
+
+
         for (int i = 1; i < list.size(); i++) {
             Map<String, String> tempMap = list.get(i);
-            Map<String,String> cleanedMap = new HashMap<String, String>();
+            cleanedMap = new HashMap<String, String>();
 
-            cleanedMap.put("URI",MapUri);
+
             if (MapUri.contains("cert.org")) {
                 return list; //already cleaned
 
             }
             else if (MapUri.contains("malc0de.com")) {
                 String[] tmpAr = getContFromRegex(tempMap.get("Description")+",");
-                cleanedMap.put("URL",tmpAr[0]);
                 cleanedMap.put("IP",tmpAr[1]);
                 cleanedMap.put("Country",tmpAr[2]);
                 cleanedMap.put("ASN",tmpAr[3]);

@@ -150,6 +150,17 @@ public class ParsersFromRssClass {
             else if(h3El.get(i).text().contains("Vendor Information "))
             {
                 Element table = h3El.get(i).nextElementSibling();
+
+                while(!table.id().equals("vendor-info2"))
+                {
+                    table=table.nextElementSibling();
+                    if(table.nodeName().equals("cvss"))
+                        break;
+                }
+
+
+
+
                 //System.out.println(table);
                 Element row1 = table.select("tr").first();
                 Elements td1 = row1.select("th");
@@ -165,6 +176,7 @@ public class ParsersFromRssClass {
                 //System.out.println(strToPut);
 
                 mapCont.put("Vendor Information",strToPut);
+
             }
             else if(h3El.get(i).text().contains("CVSS Metrics "))
             {
@@ -248,7 +260,13 @@ public class ParsersFromRssClass {
                     "Mozilla/5.0 (Windows NT 5.1; rv:19.0) Gecko/20100101 Firefox/19.0");
             // Reading the feed
             SyndFeedInput input = new SyndFeedInput();
+
+            //we allow doctype declarations used by some sources
+            input.setAllowDoctypes(true);
+
+
             SyndFeed feed = input.build(new XmlReader(httpcon));
+
 
             List entries = feed.getEntries().subList(0,size);
             itEntries = entries.iterator();

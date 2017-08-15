@@ -38,6 +38,8 @@ public class HelperMethods {
     }
 
 
+    //Gets a string a trannsforms it to a XMLGregorianCalendar object which is accepted in the stix specification.
+
     static XMLGregorianCalendar getDateFromString(String dateStr) {
         DateFormat df = new SimpleDateFormat("dd MMM yyyy");
         Date date = null;
@@ -92,10 +94,14 @@ public class HelperMethods {
         return now;
     }
 
+
+    //Accepts an arraylist  of file paths and puts all the files in a zip archive file.
     public static File FilesToZip(ArrayList<String> ftp, String outName) {
 
         String homeDir = System.getProperty("java.io.tmpdir");
         File file = new File(homeDir,outName);
+        if(file.exists())
+            file.delete();
 
         try {
 
@@ -140,6 +146,9 @@ public class HelperMethods {
 
     }
 
+
+
+    //Accepts a stix file path and extracts the stix unique ID.
     public static String getStixName(String file) {
         DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder docBuilder = null;

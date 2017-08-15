@@ -283,13 +283,13 @@ public class StixProducer {
         MalwareType malwareType = new MalwareType().withMalwareInstances(malwareInstanceType);
 
         TTP ttp = new TTP()
-                .withTitle("Malware/Adaware")
+                .withTitle("Malware/Βadware")
                 .withShortDescriptions(new StructuredTextType().withValue("badware "+threat))
                 .withBehavior(new BehaviorType().withMalware(malwareType));
 
         STIXHeaderType stixHeader = new STIXHeaderType()
                 .withDescriptions(new StructuredTextType()
-                        .withValue("Malware/adaware"));
+                        .withValue("Malware/badware"));
 
         STIXPackage stixPackage = new STIXPackage()
                 .withSTIXHeader(stixHeader)
