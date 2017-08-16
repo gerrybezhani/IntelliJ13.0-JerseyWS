@@ -159,8 +159,12 @@ public class HelperMethods {
         }
         Document doc = null;
         String id2 = null;
+        File fileToRead = new File(file);
+        InputStream in = null;
         try {
-            doc = docBuilder.parse(new File(file));
+
+            in = new FileInputStream(fileToRead);
+            doc = docBuilder.parse(in);
 
 
             id2 = doc.getFirstChild().getAttributes().item(0).getNodeValue();
@@ -170,10 +174,16 @@ public class HelperMethods {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
-
-
-
         }
+        finally {
+            try {
+                in.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+
         return id2;
     }
 

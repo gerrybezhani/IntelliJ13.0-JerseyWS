@@ -18,6 +18,7 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.UUID;
 
 
 // Plain old Java Object it does not extend as class or implements
@@ -61,6 +62,9 @@ public class Server {
 
         if(url==null)
             return Response.status(200).entity("Source not found").build();
+
+        if(limit==0)
+            limit=20;
 
         ArrayList<Map<String,String>> parsedCont = ParsersFromRssClass.parseRssFeeds(url,limit);
         ArrayList<Map<String,String>> cleanedCont = null;
@@ -120,7 +124,7 @@ public class Server {
 
         fileNames = new ArrayList<String>();
 
-        if(limit == 0 || limit >= cleanedCont.size())
+        if( limit >= cleanedCont.size())
             limit = cleanedCont.size();
         else
             limit++;
@@ -140,12 +144,15 @@ public class Server {
             try {
                 String userHome = System.getProperty("java.io.tmpdir");
                 file = new File(userHome,"tmp.xml");
-                FileWriter fileWriter = new FileWriter(file);
-                fileWriter.write(output);
-                fileWriter.flush();
-                fileWriter.close();
+                FileOutputStream fileWriter = new FileOutputStream(file);
+                PrintWriter p = new PrintWriter(fileWriter);
+                p.write(output);
+                p.flush();
+                p.close();
 
                 String newName = HelperMethods.getStixName(file.getPath());
+                if(newName==null)
+                    newName="package-"+ UUID.randomUUID().toString()+"RANDOM-NAME";
                 File file2 = new File(userHome,newName+".xml");
 
 

@@ -149,30 +149,35 @@ public class ParsersFromRssClass {
             }
             else if(h3El.get(i).text().contains("Vendor Information "))
             {
-                Element table = h3El.get(i).nextElementSibling();
 
-                while(!table.id().equals("vendor-info2"))
+                String strToPut=" ";
+                Element table = doc.getElementById("vendor-info2");
+
+                if(table==null)
                 {
-                    table=table.nextElementSibling();
-                    if(table.nodeName().equals("cvss"))
-                        break;
+                    Element table2 = h3El.get(i).nextElementSibling();
+                    Elements tds = table2.getElementsByTag("td");
+
+                    for (Element td : tds) {
+                        strToPut += td.text()+"-";
+                    }
+                }
+                else
+                {
+                    Elements ths = table.getElementsByTag("th");
+                    for (Element th : ths) {
+                        strToPut += th.text()+"|";
+                    }
+                    Elements tds = table.getElementsByTag("td");
+
+
+                    for (Element td : tds) {
+                        strToPut += td.text()+"-";
+                    }
+
                 }
 
 
-
-
-                //System.out.println(table);
-                Element row1 = table.select("tr").first();
-                Elements td1 = row1.select("th");
-
-                Element row2 = table.select("tr").get(1);
-                Elements td2 = row2.select("td");
-
-                //built string of vendor info
-                String strToPut = " ";
-                for (int d = 0; d< td1.size(); d++) {
-                    strToPut += " " +td1.get(d).text() + " : " + td2.get(d).text() +"|";
-                }
                 //System.out.println(strToPut);
 
                 mapCont.put("Vendor Information",strToPut);
