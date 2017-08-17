@@ -18,7 +18,6 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-import org.xml.sax.XMLReader;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
@@ -61,7 +60,7 @@ public class ParsersFromRssClass {
 
     }
 
-    public static String[] getFromMalshare() {
+    private static String[] getFromMalshare() {
         CloseableHttpClient httpclient = HttpClients.createDefault();
         HttpGet httpGet = new HttpGet(AdressesClass.getUrls().get(4) + "/api.php?api_key=" + ApiKeyClass.malshare + "&action=getlist");
         String[] splitCont = new String[0];
@@ -86,7 +85,7 @@ public class ParsersFromRssClass {
     }
 
 
-    public static ArrayList<Map<String,String>> getContentsFromCert(int size)
+    private static ArrayList<Map<String,String>> getContentsFromCert(int size)
     {
         //contents arraylist contains the HTML content section of the rss feed from CERT.OR
         ArrayList<String> contents = getFeedContents(AdressesClass.getUrls().get(3),size);
@@ -101,7 +100,7 @@ public class ParsersFromRssClass {
 
         return allContents;
     }
-    public static Map<String, String> HtmlParseFromCert(String html)
+    private static Map<String, String> HtmlParseFromCert(String html)
     {
         /*this method with parse the html content and
         return Description,Impact,Solution,Vendor Information
@@ -180,7 +179,7 @@ public class ParsersFromRssClass {
 
                 //System.out.println(strToPut);
 
-                mapCont.put("Vendor Information",strToPut);
+                mapCont.put("Vendor Information",StringEscapeUtils.escapeHtml(strToPut));
 
             }
             else if(h3El.get(i).text().contains("CVSS Metrics "))
@@ -210,12 +209,12 @@ public class ParsersFromRssClass {
             else if(h3El.get(i).text().equals("References"))
             {
                 Element list = h3El.get(i).nextElementSibling();
-                mapCont.put("References",list.text());
+                mapCont.put("References",StringEscapeUtils.escapeHtml(list.text()));
             }
             else if(h3El.get(i).text().equals("Credit"))
             {
                 Element el = h3El.get(i).nextElementSibling();
-                mapCont.put("Credit",el.text());
+                mapCont.put("Credit",StringEscapeUtils.escapeHtml(el.text()));
             }
             else if(h3El.get(i).text().equals("Other Information"))
             {
@@ -235,7 +234,7 @@ public class ParsersFromRssClass {
                // System.out.println(strToReturn);
 
 
-                mapCont.put("Other Information",strToReturn);
+                mapCont.put("Other Information",StringEscapeUtils.escapeHtml(strToReturn));
 
                 return mapCont;
             }
@@ -247,14 +246,14 @@ public class ParsersFromRssClass {
         return null;
     }
 
-    public static ArrayList<Map<String,String>>  getContFromRssNoHtml(String urlAdress,int size) {
+    private static ArrayList<Map<String,String>>  getContFromRssNoHtml(String urlAdress, int size) {
 
         /*
             this method will take a rss URI as a parameter
             which contains only a string as a content
         */
 
-        URL url = null;
+        URL url;
         Iterator itEntries = null;
         try {
             //thetume ton browser Agent se browser-like gia na apofigume 403 errors
@@ -272,6 +271,9 @@ public class ParsersFromRssClass {
 
             SyndFeed feed = input.build(new XmlReader(httpcon));
 
+
+            if(feed.getEntries().size() <= size)
+                    size=feed.getEntries().size();
 
             List entries = feed.getEntries().subList(0,size);
             itEntries = entries.iterator();
@@ -305,7 +307,7 @@ public class ParsersFromRssClass {
         return contAr;
     }
 
-    public static  ArrayList<String> getFeedContents(String urlString,int size)
+    private static  ArrayList<String> getFeedContents(String urlString, int size)
     {
         ArrayList<String> htmlCont = new ArrayList<String>();
         SyndFeed feed = null;
